@@ -220,8 +220,9 @@ if(EMSCRIPTEN)
 	"SHELL:-sFORCE_FILESYSTEM=1"
 	"SHELL:-sEXPORTED_RUNTIME_METHODS=[\"FS\",\"callMain\"]"
 	"SHELL:-sINVOKE_RUN=0"
+	"SHELL:-sSINGLE_FILE=1"
 	"SHELL:-lidbfs.js"
-    "SHELL:--preload-file ${CMAKE_CURRENT_SOURCE_DIR}/web-assets@/"
+	"SHELL:--preload-file ${CMAKE_CURRENT_SOURCE_DIR}/web-assets@/"
 	"SHELL:--shell-file ${CMAKE_CURRENT_SOURCE_DIR}/wasm/shell.html"
 )
 	set_target_properties(pvz-portable PROPERTIES SUFFIX ".html")
