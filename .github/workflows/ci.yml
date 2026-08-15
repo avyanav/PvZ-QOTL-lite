@@ -803,6 +803,7 @@ jobs:
           build-wasm/pvz-portable.html
           build-wasm/pvz-portable.js
           build-wasm/pvz-portable.wasm
+          build-wasm/pvz-portable.data
 
   release:
     name: Release
