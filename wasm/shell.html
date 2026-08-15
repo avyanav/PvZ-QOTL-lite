@@ -783,6 +783,10 @@ window.onGameExit = function() {
 
     window.setTimeout(() => window.location.reload(), 0);
 };
+    window.moduleReadyPromise.then(() => {
+    if (!gameStarted)
+        startGame();
+});
 </script>
 </body>
 </html>
