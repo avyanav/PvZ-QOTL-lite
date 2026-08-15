@@ -222,6 +222,7 @@ if(EMSCRIPTEN)
 		"SHELL:-sEXPORTED_RUNTIME_METHODS=[\"FS\",\"callMain\"]"
 		"SHELL:-sINVOKE_RUN=0"
 		"SHELL:-sSINGLE_FILE=1"
+		"SHELL:-sSINGLE_FILE_BINARY_ENCODE=0"
 		"SHELL:-lidbfs.js"
 		"SHELL:--embed-file ${CMAKE_CURRENT_SOURCE_DIR}/web-assets@/"
 		"SHELL:--shell-file ${CMAKE_CURRENT_SOURCE_DIR}/wasm/shell.html"
