@@ -205,24 +205,26 @@ if(EMSCRIPTEN)
 		${OPENMPT_LIB}
 	)
 	target_link_options(pvz-portable PRIVATE
-		"SHELL:-sUSE_SDL=2"
-		"SHELL:-sUSE_ZLIB=1"
-		"SHELL:-sUSE_LIBPNG=1"
-		"SHELL:-sUSE_LIBJPEG=1"
-		"SHELL:-sUSE_OGG=1"
-		"SHELL:-sUSE_VORBIS=1"
-		"SHELL:-sUSE_MPG123=1"
-		"SHELL:-fexceptions"
-		"SHELL:-sASYNCIFY"
-		"SHELL:-sALLOW_MEMORY_GROWTH=1"
-		"SHELL:-sMAXIMUM_MEMORY=1073741824"
-		"SHELL:-sGROWABLE_ARRAYBUFFERS=0"
-		"SHELL:-sFORCE_FILESYSTEM=1"
-		"SHELL:-sEXPORTED_RUNTIME_METHODS=[\"FS\",\"callMain\"]"
-		"SHELL:-sINVOKE_RUN=0"
-		"SHELL:-lidbfs.js"
-		"SHELL:--shell-file ${CMAKE_CURRENT_SOURCE_DIR}/wasm/shell.html"
-	)
+	"SHELL:-sUSE_SDL=2"
+	"SHELL:-sUSE_ZLIB=1"
+	"SHELL:-sUSE_LIBPNG=1"
+	"SHELL:-sUSE_LIBJPEG=1"
+	"SHELL:-sUSE_OGG=1"
+	"SHELL:-sUSE_VORBIS=1"
+	"SHELL:-sUSE_MPG123=1"
+	"SHELL:-fexceptions"
+	"SHELL:-sASYNCIFY"
+	"SHELL:-sALLOW_MEMORY_GROWTH=1"
+	"SHELL:-sMAXIMUM_MEMORY=1073741824"
+	"SHELL:-sGROWABLE_ARRAYBUFFERS=0"
+	"SHELL:-sFORCE_FILESYSTEM=1"
+	"SHELL:-sEXPORTED_RUNTIME_METHODS=[\"FS\",\"callMain\"]"
+	"SHELL:-sINVOKE_RUN=0"
+	"SHELL:-lidbfs.js"
+	"SHELL:--preload-file ${CMAKE_CURRENT_SOURCE_DIR}/web-assets/main.pak@/main.pak"
+	"SHELL:--preload-file ${CMAKE_CURRENT_SOURCE_DIR}/web-assets/properties@/properties"
+	"SHELL:--shell-file ${CMAKE_CURRENT_SOURCE_DIR}/wasm/shell.html"
+)
 	set_target_properties(pvz-portable PROPERTIES SUFFIX ".html")
 else()
 	target_link_libraries(pvz-portable PRIVATE
