@@ -129,6 +129,7 @@ public:
 	LawnApp*						mApp;
 	DataArray<Zombie>				mZombies;
 	DataArray<Plant>				mPlants;
+	GameButton*                     mFastButton;
 	DataArray<Projectile>			mProjectiles;
 	DataArray<Coin>					mCoins;
 	DataArray<LawnMower>			mLawnMowers;

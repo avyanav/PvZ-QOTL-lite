@@ -117,6 +117,8 @@ Board::Board(LawnApp* theApp)
 	mShakeCounter = 0;
 	mShakeAmountX = 0;
 	mShakeAmountY = 0;
+	mFastButton = new GameButton(2);
+	mFastButton->Resize(740, 30, IMAGE_ZEN_NEXTGARDEN->mWidth, 46);
 	mPaused = false;
 	mLevelAwardSpawned = false;
 	mFlagRaiseCounter = 0;
@@ -215,6 +217,7 @@ Board::Board(LawnApp* theApp)
 	{
 		mMenuButton->SetLabel("[MENU_BUTTON]");
 		mMenuButton->Resize(681, -10, 117, 46);
+		mFastButton->mBtnNoDraw = false;
 	}
 
 	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
@@ -246,6 +249,10 @@ Board::~Board()
 	if (mMenuButton)
 	{
 		delete mMenuButton;
+	}
+	if (mFastButton)
+	{
+		delete mFastButton;
 	}
 	if (mStoreButton)
 	{
@@ -395,6 +402,8 @@ bool Board::LoadGame(const std::string& theFileName)
 	mApp->ClearUpdateBacklog();
 	ResetFPSStats();
 	UpdateLayers();
+	if (mApp->mGameScene == GameScenes::SCENE_PLAYING)
+		mFastButton->mBtnNoDraw = false;
 	return true;
 }
 
@@ -1940,7 +1949,7 @@ void Board::FadeOutLevel()
 			mIceTimer[aRow] = mNextSurvivalStageCounter;
 		}
 	}
-
+	mApp->isFastMode = false;
 	mApp->SetCursor(CURSOR_POINTER);
 }
 
@@ -2969,6 +2978,7 @@ void Board::UpdateCursor()
 	case GameObjectType::OBJECT_TYPE_STINKY:
 	case GameObjectType::OBJECT_TYPE_TREE_OF_WISDOM:
 	case GameObjectType::OBJECT_TYPE_COIN:
+	case GameObjectType::OBJECT_TYPE_FASTMODE_BUTTON:
 	case GameObjectType::OBJECT_TYPE_PROJECTILE:
 		aShowFinger = true;
 		break;
@@ -4143,6 +4153,11 @@ bool Board::MouseHitTest(int x, int y, HitResult* theHitResult)
 		theHitResult->mObjectType = GameObjectType::OBJECT_TYPE_MENU_BUTTON;
 		return true;
 	}
+	if (mFastButton->IsMouseOver() && CanInteractWithBoardButtons())
+	{
+		theHitResult->mObjectType = GameObjectType::OBJECT_TYPE_FASTMODE_BUTTON;
+		return true;
+	}
 	else if (mStoreButton && mStoreButton->IsMouseOver() && CanInteractWithBoardButtons())
 	{
 		theHitResult->mObjectType = GameObjectType::OBJECT_TYPE_STORE_BUTTON;
@@ -4401,6 +4416,10 @@ void Board::MouseDown(int x, int y, int theClickCount)
 	{
 		mApp->PlaySample(Sexy::SOUND_GRAVEBUTTON);
 	}
+	if (mFastButton->IsMouseOver() && CanInteractWithBoardButtons() && theClickCount > 0)
+	{
+		mApp->PlaySample(Sexy::SOUND_TAP);
+	}
 	else if (mStoreButton && mStoreButton->IsMouseOver() && CanInteractWithBoardButtons() && theClickCount > 0)
 	{
 		if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN || mApp->mGameMode == GameMode::GAMEMODE_TREE_OF_WISDOM)
@@ -4636,6 +4655,13 @@ void Board::MouseUp(int x, int y, int theClickCount)
 				mApp->mBoardResult = BoardResult::BOARDRESULT_QUIT;
 				mApp->DoBackToMain();
 			}
+		}
+		if (mFastButton->IsMouseOver() && !mApp->GetDialog(Dialogs::DIALOG_GAME_OVER) && !mApp->GetDialog(Dialogs::DIALOG_LEVEL_COMPLETE) && mBoardFadeOutCounter < 0)
+		{
+			mFastButton->mIsOver = false;
+			mFastButton->mIsDown = false;
+			UpdateCursor();
+			mApp->isFastMode = !mApp->isFastMode;
 		}
 		else if(mStoreButton && mStoreButton->IsMouseOver())
 		{
@@ -5072,6 +5098,7 @@ void Board::PuzzleSaveStreak()
 
 void Board::ZombiesWon(Zombie* theZombie)
 {
+	mApp->isFastMode = false;
 	if (mApp->mGameScene == GameScenes::SCENE_ZOMBIES_WON)
 		return;
 
@@ -5720,6 +5747,15 @@ void Board::Update()
 
 	Widget::Update();
 	MarkDirty();
+	if (mPaused && mApp->isFastMode)
+		mApp->isFastMode = false;
+
+	if (mFastButton != nullptr && !mFastButton->mBtnNoDraw)
+	{
+		mFastButton->mButtonImage = !mApp->isFastMode ? IMAGE_ZEN_NEXTGARDEN : IMAGE_ZEN_NEXTGARDEN;
+		mFastButton->mOverImage = !mApp->isFastMode ? IMAGE_ZEN_NEXTGARDEN : IMAGE_ZEN_NEXTGARDEN;
+		mFastButton->mDownImage = !mApp->isFastMode ? IMAGE_ZEN_NEXTGARDEN : IMAGE_ZEN_NEXTGARDEN;
+	}
 
 	mBoardUpdateCounter++;
 	mCutScene->Update();
@@ -5747,6 +5783,12 @@ void Board::Update()
 		mMenuButton->mDisabled = aDisabled;
 	}
 	mMenuButton->Update();
+	if (!mFastButton->mBtnNoDraw)
+	{
+		mFastButton->mDisabled = aDisabled;
+	}
+	if (HAS_FAST_FOWARD_BUTTON)
+		mFastButton->Update();
 	if (mStoreButton)
 	{
 		mStoreButton->mDisabled = aDisabled;
@@ -7401,7 +7443,8 @@ void Board::DrawUITop(Graphics* g)
 	{
 		DrawTopRightUI(g);
 	}
-
+	if (HAS_FAST_FOWARD_BUTTON)
+		mFastButton->Draw(g);
 	if (mTimeStopCounter > 0)
 	{
 		g->SetColor(Color(200, 200, 200, 210));
