@@ -228,11 +228,11 @@ if(EMSCRIPTEN)
 	set_target_properties(pvz-portable PROPERTIES SUFFIX ".html")
 else()
 	target_link_libraries(pvz-portable PRIVATE
-		SDL2_mixer_ext_Static 
-		${OPENMPT_LIB} 
-		${MPG123_LIB} 
-		${VORBIS_LIB} 
-		${OGG_LIB} 
+		SDL2_mixer_ext_Static
+		${OPENMPT_LIB}
+		${MPG123_LIB}
+		${VORBIS_LIB}
+		${OGG_LIB}
 		PNG::PNG
 		JPEG::JPEG
 		ZLIB::ZLIB
