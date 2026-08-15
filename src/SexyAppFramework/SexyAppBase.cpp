@@ -398,6 +398,7 @@ SexyAppBase::SexyAppBase()
 	mPrimaryThreadId = std::this_thread::get_id();
 
 	mTabletPC = false;
+	mSpeedModifier = 2;
 }
 
 SexyAppBase::~SexyAppBase()

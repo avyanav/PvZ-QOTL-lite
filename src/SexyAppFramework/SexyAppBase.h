@@ -159,7 +159,7 @@ public:
 	std::string				mRegKey;
 	std::string				mResourceDir;
 	std::string				mCustomSaveDir;
-
+    int						mSpeedModifier;
 	int						mRelaxUpdateBacklogCount; // app doesn't try to catch up for this many frames
 	int						mPreferredX;
 	int						mPreferredY;
