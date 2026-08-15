@@ -51,3 +51,9 @@ constexpr const int FINAL_LEVEL = NUM_LEVELS;
 constexpr const int LAST_STAND_FLAGS = 5;
 constexpr const int SURVIVAL_NORMAL_FLAGS = 5;
 constexpr const int SURVIVAL_HARD_FLAGS = 10;
+
+
+////////////////////////////////////////////////////////////
+///						QOTL VARIABLES					 ///
+////////////////////////////////////////////////////////////
+const bool			HAS_FAST_FOWARD_BUTTON = true;

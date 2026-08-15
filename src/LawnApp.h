@@ -76,6 +76,7 @@ class LawnApp : public SexyApp
 public:
 	Board*							mBoard;
 	TitleScreen*					mTitleScreen;
+	bool							isFastMode;
 	GameSelector*					mGameSelector;
 	SeedChooserScreen*				mSeedChooserScreen;
 	AwardScreen*					mAwardScreen;
@@ -140,6 +141,7 @@ public:
 	TrialType						mTrialType;
 	bool							mDebugTrialLocked;
 	bool							mMuteSoundsForCutscene;
+    int mSpeedModifier;
 
 public:
 	LawnApp();

@@ -122,6 +122,7 @@ LawnApp::LawnApp()
 	mCreditScreen = nullptr;
 	mTitleScreen = nullptr;
 	mSoundSystem = nullptr;
+	mSpeedModifier = 2;
 	mMusic = nullptr;
 	mKonamiCheck = nullptr;
 	mMustacheCheck = nullptr;
@@ -137,6 +138,7 @@ LawnApp::LawnApp()
 	mSuperMowerMode = false;
 	mFutureMode = false;
 	mPinataMode = false;
+	isFastMode = false;
 	mDanceMode = false;
 	mDaisyMode = false;
 	mSukhbirMode = false;
@@ -1459,6 +1461,7 @@ void LawnApp::CheckForGameEnd()
 {
 	if (mBoard == nullptr || !mBoard->mLevelComplete)
 		return;
+	isFastMode = false;
 
 	bool aUnlockedNewChallenge = UpdatePlayerProfileForFinishingLevel();
 
@@ -1637,6 +1640,10 @@ void LawnApp::UpdateFrames()
 	else if (gFastMo)
 	{
 		aUpdateCount = 20;
+	}
+	else if (isFastMode)
+	{
+		aUpdateCount = mSpeedModifier;
 	}
 
 	for (int i = 0; i < aUpdateCount; i++)
