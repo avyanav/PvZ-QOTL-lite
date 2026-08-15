@@ -380,7 +380,7 @@ function refreshUI() {
         if (key.startsWith('properties/')) { hasProperties = true; break; }
     }
 
-    const allReady = hasPak && hasProperties;
+    const allReady = true;
     const hasAny = collectedFiles.size > 0;
 
     fileListDiv.innerHTML = '';
@@ -783,7 +783,9 @@ window.onGameExit = function() {
 
     window.setTimeout(() => window.location.reload(), 0);
 };
-    window.moduleReadyPromise.then(() => {
+  refreshUI();
+
+window.moduleReadyPromise.then(() => {
     if (!gameStarted)
         startGame();
 });
